@@ -28,7 +28,7 @@ def resize_with_aspect_ratio(image, width=None, height=None, inter=cv2.INTER_ARE
 
 	return cv2.resize(image, dim, interpolation=inter)
 
-def preprocess_image(image_path, width=800):
+def preprocess_image(image_path, width=640):
 	"""
 	Load and preprocess an image by resizing and converting to HSV.
 	"""
@@ -66,6 +66,7 @@ def process_images(image_dir, roi_coords, background):
 	Process all images in the directory to detect bees.
 	"""
 	image_files = [f for f in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, f))]
+	image_files.sort()  # Sort files to maintain order
 	idx = 0
 
 	while True:
@@ -74,7 +75,7 @@ def process_images(image_dir, roi_coords, background):
 
 		# Load and preprocess the target image
 		target_img = cv2.imread(image_path)
-		target_img = resize_with_aspect_ratio(target_img, width=800)
+		target_img = resize_with_aspect_ratio(target_img, width=640)
 		just_show = target_img.copy()
 		target_img_gray = cv2.cvtColor(target_img, cv2.COLOR_BGR2GRAY)
 
@@ -118,13 +119,13 @@ def process_images(image_dir, roi_coords, background):
 
 		# Display the results
 		cv2.imshow('Detected ROI', just_show)
-		# cv2.imshow('Difference', diff)
-		# cv2.imshow('Filtered Difference', filtered_diff)
-		# cv2.imshow('Otsu Threshold', otsu_thresh)
+		cv2.imshow('Difference', diff)
+		cv2.imshow('Filtered Difference', filtered_diff)
+		cv2.imshow('Otsu Threshold', otsu_thresh)
 
 		# Handle key presses for navigation
 		key = cv2.waitKey(0)
-		if key == 27:  # Exit on 'Esc' key
+		if key == 27 or key == ord('q'):  # Exit on 'Esc' key
 			break
 		elif key == 97:  # Left arrow key ('a')
 			if idx > 0:
