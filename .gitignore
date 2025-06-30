@@ -3,5 +3,8 @@
 
 images/
 images2/
+images*
+
+utils/
 
 .DS_Store

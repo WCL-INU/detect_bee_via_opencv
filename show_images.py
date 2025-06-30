@@ -2,7 +2,7 @@ import os
 import cv2
 
 # Directory containing images
-image_dir = './images'
+image_dir = './images_device_105'
 
 # List all files in the directory
 image_files = [f for f in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, f))]
