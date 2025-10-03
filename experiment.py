@@ -4,17 +4,22 @@ import glob
 import os
 import random
 import matplotlib.pyplot as plt
+from dotenv import load_dotenv
+
+load_dotenv()
+
+directory = os.getenv("DIR")
 
 # Path to the folder containing images
-folder = 'images_device_106'
-image_paths = glob.glob(os.path.join(folder, '*.*'))
+image_dir = directory
+image_paths = glob.glob(os.path.join(image_dir, "*.*"))
 
 if not image_paths:
     print("No images found in the folder.")
     exit()
 
 # Randomly sample up to 100 images
-sample_size = min(100, len(image_paths))
+sample_size = min(1000, len(image_paths))
 sampled_paths = random.sample(image_paths, sample_size)
 
 # Read the first image to get size
@@ -51,5 +56,5 @@ plt.imshow(avg_img)
 plt.show()
 
 # Save the average image
-output_path = os.path.join(folder, 'average_image.jpg')
+output_path = os.path.join(image_dir, "average_image_1000.jpg")
 cv2.imwrite(output_path, cv2.cvtColor(avg_img, cv2.COLOR_RGB2BGR))

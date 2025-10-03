@@ -2,8 +2,11 @@ import os
 from datetime import datetime, timedelta
 import re
 from PIL import Image
+from dotenv import load_dotenv
 
-directory = ""
+load_dotenv()
+
+directory = os.getenv("DIR")
 
 # Create a dictionary to track files by (date, hour, minute)
 file_time_map = {}

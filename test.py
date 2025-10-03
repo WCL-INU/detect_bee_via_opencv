@@ -7,9 +7,15 @@
 import os
 import cv2
 import numpy as np
+from dotenv import load_dotenv
 
-image_dir = "./images_device_105"
-background_image = "./images_device_105/average_image.jpg"
+load_dotenv()
+
+directory = os.getenv("DIR")
+
+
+image_dir = directory
+background_image = f"{image_dir}/average_image_1000.jpg"
 
 def resize_with_aspect_ratio(image, width=None, height=None, inter=cv2.INTER_AREA):
     """
@@ -44,10 +50,12 @@ def detect_white_panel(hsv):
     """
     Detect white regions in the image using HSV thresholds.
     """
-    lower_white = np.array([0, 0, 200])
-    upper_white = np.array([180, 50, 255])
+    lower_white = np.array([0, 0, 160])
+    upper_white = np.array([180, 120, 255])
     mask = cv2.inRange(hsv, lower_white, upper_white)
 
+    cv2.imshow('White Panel Mask', mask)
+    cv2.waitKey(0)  # Allow the window to update
     # Apply morphological operations to clean up the mask
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (15, 15))
     mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
@@ -68,7 +76,7 @@ def process_images(image_dir, roi_coords, background):
     """
     Process all images in the directory to detect bees.
     """
-    image_files = [f for f in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, f))]
+    image_files = [f for f in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, f)) and f.lower().endswith('.jpg') and not f.startswith('.')]
     image_files.sort()  # Sort files to maintain order
     idx = 0
 
